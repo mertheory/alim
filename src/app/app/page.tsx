@@ -76,7 +76,7 @@ export default function Dashboard() {
           <textarea
             value={message}
             onChange={(e) => setMessage(e.target.value)}
-            placeholder="Paste the message or conversation dynamic here..."
+            placeholder="Paste the message you RECEIVED (from them). We'll analyze from your perspective..."
             disabled={loading}
             className="h-32 w-full resize-none rounded-2xl border border-gray-900 bg-gray-950 p-4 text-sm font-light placeholder-gray-600 transition-all focus:border-purple-600 focus:outline-none disabled:opacity-60"
           />

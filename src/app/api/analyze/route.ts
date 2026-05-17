@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { GoogleGenerativeAI } from "@google/generative-ai";
-import { COACH_SYSTEM_PROMPT } from "@/lib/prompts";
+import { ANALYZE_USER_PROMPT_PREFIX, COACH_SYSTEM_PROMPT } from "@/lib/prompts";
 import type { AnalysisResponse, AnalyzeRequest, RiskLevel } from "@/types/analysis";
 
 export const runtime = "nodejs";
@@ -165,7 +165,7 @@ export async function POST(request: Request) {
     });
 
     const result = await model.generateContent(
-      `Analyze this conversation message or thread:\n\n${trimmed}`
+      `${ANALYZE_USER_PROMPT_PREFIX}${trimmed}`
     );
 
     const text = result.response.text();

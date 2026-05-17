@@ -1,6 +1,6 @@
 import { GoogleGenerativeAI } from "@google/generative-ai";
 import type { AnalysisResponse } from "@/types/analysis";
-import { COACH_SYSTEM_PROMPT } from "@/lib/prompts";
+import { ANALYZE_USER_PROMPT_PREFIX, COACH_SYSTEM_PROMPT } from "@/lib/prompts";
 
 const DEFAULT_MODEL = "gemini-2.5-flash";
 
@@ -26,7 +26,7 @@ export async function analyzeMessage(
   });
 
   const result = await model.generateContent(
-    `Analyze this conversation message or thread:\n\n${message}`
+    `${ANALYZE_USER_PROMPT_PREFIX}${message}`
   );
 
   const text = result.response.text();
