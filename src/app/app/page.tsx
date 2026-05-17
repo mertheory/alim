@@ -140,7 +140,11 @@ export default function Dashboard() {
               </p>
             </div>
 
-            <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
+            <div>
+              <h3 className="mb-4 text-sm font-bold uppercase tracking-wide text-gray-400">
+                Strategic Response Matrix
+              </h3>
+              <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
               {(
                 [
                   { key: "soft", label: "Soft Response", color: "text-blue-400" },
@@ -152,6 +156,11 @@ export default function Dashboard() {
                   {
                     key: "direct",
                     label: "Direct Response",
+                    color: "text-orange-400",
+                  },
+                  {
+                    key: "savage",
+                    label: "Savage Response",
                     color: "text-red-400",
                   },
                 ] as const
@@ -164,10 +173,14 @@ export default function Dashboard() {
                     {label}
                   </span>
                   <p className="text-xs font-light italic text-gray-400">
-                    &ldquo;{result.responses[key]}&rdquo;
+                    &ldquo;
+                    {result.responses[key] ||
+                      "Yanıt üretilemedi — lütfen tekrar analiz et."}
+                    &rdquo;
                   </p>
                 </div>
               ))}
+              </div>
             </div>
 
             <div className="flex flex-col items-center justify-between gap-3 border-t border-gray-900 pt-4 text-xs sm:flex-row">

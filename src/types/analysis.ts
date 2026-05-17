@@ -9,6 +9,7 @@ export interface AnalysisResponse {
     soft: string;
     balanced: string;
     direct: string;
+    savage: string;
   };
   strategy: string;
 }

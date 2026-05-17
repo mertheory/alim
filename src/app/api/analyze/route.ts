@@ -48,6 +48,7 @@ function parseAnalysisResponse(raw: string): AnalysisResponse {
   const soft = responses?.soft;
   const balanced = responses?.balanced;
   const direct = responses?.direct;
+  const savage = responses?.savage;
   const strategy = data.strategy;
   const riskLabel = data.riskLabel;
 
@@ -60,6 +61,11 @@ function parseAnalysisResponse(raw: string): AnalysisResponse {
   ) {
     throw new Error("Response missing required fields");
   }
+
+  const savageText =
+    typeof savage === "string" && savage.trim().length > 0
+      ? savage.trim()
+      : "Bu tonda devam etmeyeceğim. Sınırım net; saygılı ve yapıcı konuştuğunda konuşuruz.";
 
   const userPowerPercent =
     typeof data.userPowerPercent === "number"
@@ -79,6 +85,7 @@ function parseAnalysisResponse(raw: string): AnalysisResponse {
       soft: soft.trim(),
       balanced: balanced.trim(),
       direct: direct.trim(),
+      savage: savageText,
     },
     strategy: strategy.trim(),
   };

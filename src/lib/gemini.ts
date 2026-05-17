@@ -42,6 +42,7 @@ export async function analyzeMessage(
     !data.responses?.soft ||
     !data.responses?.balanced ||
     !data.responses?.direct ||
+    !data.responses?.savage ||
     !data.strategy ||
     !data.riskLevel ||
     !data.riskLabel ||

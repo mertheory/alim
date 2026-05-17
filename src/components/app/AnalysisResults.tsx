@@ -15,7 +15,8 @@ const responseStyles = [
     label: "Balanced / neutral",
     accent: "text-violet-400",
   },
-  { key: "direct" as const, label: "Direct / firm", accent: "text-indigo-400" },
+  { key: "direct" as const, label: "Direct / firm", accent: "text-orange-400" },
+  { key: "savage" as const, label: "Savage", accent: "text-red-400" },
 ];
 
 function CopyButton({ text }: { text: string }) {
@@ -54,7 +55,7 @@ export function AnalysisResults({ data }: AnalysisResultsProps) {
         <h2 className="mb-4 font-display text-xl text-white">
           Response Options
         </h2>
-        <div className="grid gap-4 md:grid-cols-3">
+        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
           {responseStyles.map(({ key, label, accent }) => (
             <GlowCard key={key}>
               <div className="mb-3 flex items-center justify-between">
