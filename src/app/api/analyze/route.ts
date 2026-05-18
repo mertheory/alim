@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { GoogleGenerativeAI } from "@google/generative-ai";
+import type { GenerativeModel } from "@google/generative-ai";
 import { ANALYZE_USER_PROMPT_PREFIX, COACH_SYSTEM_PROMPT } from "@/lib/prompts";
 import type {
   AnalysisLanguage,
@@ -13,6 +14,8 @@ export const runtime = "nodejs";
 const GEMINI_MODEL = process.env.GEMINI_MODEL ?? "gemini-2.5-flash";
 const VALID_RISK_LEVELS: RiskLevel[] = ["low", "moderate", "elevated"];
 const VALID_LANGUAGES: AnalysisLanguage[] = ["en", "tr"];
+const GEMINI_MAX_ATTEMPTS = 3;
+const GEMINI_RETRY_DELAY_MS = 2000;
 
 function normalizeRiskLevel(value: unknown): RiskLevel {
   if (typeof value === "string" && VALID_RISK_LEVELS.includes(value as RiskLevel)) {
@@ -114,8 +117,54 @@ function getErrorMessage(error: unknown): string {
   return "Analysis failed";
 }
 
+function sleep(ms: number) {
+  return new Promise((resolve) => setTimeout(resolve, ms));
+}
+
+function isGeminiTemporaryUnavailable(error: unknown): boolean {
+  const message = getErrorMessage(error).toLowerCase();
+
+  return (
+    message.includes("503") ||
+    message.includes("service unavailable") ||
+    message.includes("temporarily unavailable") ||
+    message.includes("unavailable")
+  );
+}
+
+async function generateGeminiContentWithRetry(
+  model: GenerativeModel,
+  prompt: string
+) {
+  let lastError: unknown;
+
+  for (let attempt = 1; attempt <= GEMINI_MAX_ATTEMPTS; attempt += 1) {
+    try {
+      return await model.generateContent(prompt);
+    } catch (error) {
+      lastError = error;
+
+      if (
+        !isGeminiTemporaryUnavailable(error) ||
+        attempt === GEMINI_MAX_ATTEMPTS
+      ) {
+        break;
+      }
+
+      await sleep(GEMINI_RETRY_DELAY_MS);
+    }
+  }
+
+  if (isGeminiTemporaryUnavailable(lastError)) {
+    throw new Error("Service temporarily unavailable, please try again");
+  }
+
+  throw lastError;
+}
+
 function getStatusFromError(message: string): number {
   if (message.includes("GEMINI_API_KEY")) return 503;
+  if (message.includes("Service temporarily unavailable")) return 503;
   if (
     message.includes("429") ||
     message.includes("quota") ||
@@ -181,7 +230,8 @@ export async function POST(request: Request) {
       },
     });
 
-    const result = await model.generateContent(
+    const result = await generateGeminiContentWithRetry(
+      model,
       `${ANALYZE_USER_PROMPT_PREFIX}${trimmed}`
     );
 
