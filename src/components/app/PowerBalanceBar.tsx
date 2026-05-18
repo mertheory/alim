@@ -1,8 +1,14 @@
 interface PowerBalanceBarProps {
   userPercent: number;
+  labels: {
+    partner: string;
+    you: string;
+    partnerHint: string;
+    youHint: string;
+  };
 }
 
-export function PowerBalanceBar({ userPercent }: PowerBalanceBarProps) {
+export function PowerBalanceBar({ labels, userPercent }: PowerBalanceBarProps) {
   const you = Math.min(100, Math.max(0, userPercent));
   const partner = 100 - you;
 
@@ -11,7 +17,7 @@ export function PowerBalanceBar({ userPercent }: PowerBalanceBarProps) {
       <div className="flex items-end justify-between gap-4">
         <div className="text-left">
           <span className="text-[10px] font-medium uppercase tracking-wider text-zinc-500">
-            Partner
+            {labels.partner}
           </span>
           <p className="font-mono text-2xl font-semibold tabular-nums text-indigo-300">
             {partner}%
@@ -19,7 +25,7 @@ export function PowerBalanceBar({ userPercent }: PowerBalanceBarProps) {
         </div>
         <div className="text-right">
           <span className="text-[10px] font-medium uppercase tracking-wider text-zinc-500">
-            You
+            {labels.you}
           </span>
           <p className="font-mono text-2xl font-semibold tabular-nums text-violet-300">
             {you}%
@@ -45,8 +51,8 @@ export function PowerBalanceBar({ userPercent }: PowerBalanceBarProps) {
       </div>
 
       <div className="flex justify-between text-[10px] text-zinc-600">
-        <span>Sender holds space</span>
-        <span>Your agency</span>
+        <span>{labels.partnerHint}</span>
+        <span>{labels.youHint}</span>
       </div>
     </div>
   );

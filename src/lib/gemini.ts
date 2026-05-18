@@ -44,6 +44,7 @@ export async function analyzeMessage(
     !data.responses?.direct ||
     !data.responses?.savage ||
     !data.strategy ||
+    !data.language ||
     !data.riskLevel ||
     !data.riskLabel ||
     typeof data.userPowerPercent !== "number"

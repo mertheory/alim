@@ -1,18 +1,34 @@
 import { NextResponse } from "next/server";
 import { GoogleGenerativeAI } from "@google/generative-ai";
 import { ANALYZE_USER_PROMPT_PREFIX, COACH_SYSTEM_PROMPT } from "@/lib/prompts";
-import type { AnalysisResponse, AnalyzeRequest, RiskLevel } from "@/types/analysis";
+import type {
+  AnalysisLanguage,
+  AnalysisResponse,
+  AnalyzeRequest,
+  RiskLevel,
+} from "@/types/analysis";
 
 export const runtime = "nodejs";
 
 const GEMINI_MODEL = process.env.GEMINI_MODEL ?? "gemini-2.5-flash";
 const VALID_RISK_LEVELS: RiskLevel[] = ["low", "moderate", "elevated"];
+const VALID_LANGUAGES: AnalysisLanguage[] = ["en", "tr"];
 
 function normalizeRiskLevel(value: unknown): RiskLevel {
   if (typeof value === "string" && VALID_RISK_LEVELS.includes(value as RiskLevel)) {
     return value as RiskLevel;
   }
   return "moderate";
+}
+
+function normalizeLanguage(value: unknown): AnalysisLanguage {
+  if (
+    typeof value === "string" &&
+    VALID_LANGUAGES.includes(value as AnalysisLanguage)
+  ) {
+    return value as AnalysisLanguage;
+  }
+  return "en";
 }
 
 function normalizeSummary(value: unknown): string {
@@ -77,6 +93,7 @@ function parseAnalysisResponse(raw: string): AnalysisResponse {
   }
 
   return {
+    language: normalizeLanguage(data.language),
     riskLevel: normalizeRiskLevel(data.riskLevel),
     riskLabel: riskLabel.trim(),
     userPowerPercent,

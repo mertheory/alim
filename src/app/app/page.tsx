@@ -7,19 +7,86 @@ import type { AnalysisResponse } from "@/types/analysis";
 
 const RISK_STYLES: Record<
   AnalysisResponse["riskLevel"],
-  { text: string; badge: string }
+  { text: string }
 > = {
-  low: { text: "text-emerald-400", badge: "Low" },
-  moderate: { text: "text-amber-400", badge: "Moderate" },
-  elevated: { text: "text-red-400", badge: "Elevated" },
+  low: { text: "text-emerald-400" },
+  moderate: { text: "text-amber-400" },
+  elevated: { text: "text-red-400" },
 };
 
 const RESPONSE_STYLES = [
-  { key: "soft" as const, label: "Soft", color: "text-blue-400", border: "border-blue-500/20" },
-  { key: "balanced" as const, label: "Balanced", color: "text-violet-400", border: "border-violet-500/20" },
-  { key: "direct" as const, label: "Direct", color: "text-orange-400", border: "border-orange-500/20" },
-  { key: "savage" as const, label: "Savage", color: "text-red-400", border: "border-red-500/20" },
+  { key: "soft" as const, color: "text-blue-400", border: "border-blue-500/20" },
+  {
+    key: "balanced" as const,
+    color: "text-violet-400",
+    border: "border-violet-500/20",
+  },
+  {
+    key: "direct" as const,
+    color: "text-orange-400",
+    border: "border-orange-500/20",
+  },
+  { key: "savage" as const, color: "text-red-400", border: "border-red-500/20" },
 ];
+
+const UI_LABELS = {
+  en: {
+    analyze: "Analyze",
+    riskTitle: "Risk Level",
+    riskBadges: {
+      low: "Low",
+      moderate: "Moderate",
+      elevated: "Elevated",
+    },
+    powerTitle: "Power Control Balance",
+    powerLabels: {
+      partner: "Partner",
+      you: "You",
+      partnerHint: "Sender holds space",
+      youHint: "Your agency",
+    },
+    coreSubtext: "Core Subtext",
+    strategy: "Strategy",
+    responseMatrix: "Strategic Response Matrix",
+    responses: {
+      soft: "Soft",
+      balanced: "Balanced",
+      direct: "Direct",
+      savage: "Savage",
+    },
+    footer: "AI interpreted this conversation. Keep your agency.",
+    copied: "Link copied!",
+    share: "Share analysis",
+  },
+  tr: {
+    analyze: "Analiz",
+    riskTitle: "Risk Seviyesi",
+    riskBadges: {
+      low: "Düşük",
+      moderate: "Orta",
+      elevated: "Yüksek",
+    },
+    powerTitle: "Güç Dengesi",
+    powerLabels: {
+      partner: "Karşı Taraf",
+      you: "Sen",
+      partnerHint: "Karşı tarafın etkisi",
+      youHint: "Senin alanın",
+    },
+    coreSubtext: "Alt Metin",
+    strategy: "Strateji",
+    responseMatrix: "Stratejik Cevap Matrisi",
+    responses: {
+      soft: "Yumuşak",
+      balanced: "Dengeli",
+      direct: "Doğrudan",
+      savage: "Sert",
+    },
+    footer: "AI bu konuşmayı yorumladı. Kontrol sende kalsın.",
+    copied: "Link kopyalandı!",
+    share: "Analizi paylaş",
+  },
+} satisfies Record<AnalysisResponse["language"], unknown>;
 
 function ResultCard({
   children,
@@ -81,6 +148,7 @@ export default function AnalyzePage() {
     setTimeout(() => setCopied(false), 2000);
   };
 
+  const labels = UI_LABELS[result?.language ?? "en"];
   const riskStyle = result ? RISK_STYLES[result.riskLevel] : RISK_STYLES.moderate;
 
   return (
@@ -99,7 +167,7 @@ export default function AnalyzePage() {
             </span>
           </Link>
           <span className="rounded-full border border-violet-500/20 bg-violet-950/50 px-2.5 py-0.5 text-[10px] font-medium uppercase tracking-wider text-violet-400">
-            Analyze
+            {labels.analyze}
           </span>
         </div>
       </header>
@@ -155,30 +223,33 @@ export default function AnalyzePage() {
           <div className="mt-10 space-y-5">
             <ResultCard delay={80} className="p-5 sm:p-6">
               <span className="text-[10px] font-medium uppercase tracking-wider text-zinc-500">
-                Conversation Risk
+                {labels.riskTitle}
               </span>
               <p className={`mt-2 text-lg font-semibold ${riskStyle.text}`}>
-                {riskStyle.badge} — {result.riskLabel}
+                {labels.riskBadges[result.riskLevel]} — {result.riskLabel}
               </p>
             </ResultCard>
 
             <ResultCard delay={160} className="p-5 sm:p-6">
               <span className="mb-4 block text-[10px] font-medium uppercase tracking-wider text-zinc-500">
-                Power Balance
+                {labels.powerTitle}
               </span>
-              <PowerBalanceBar userPercent={result.userPowerPercent} />
+              <PowerBalanceBar
+                labels={labels.powerLabels}
+                userPercent={result.userPowerPercent}
+              />
             </ResultCard>
 
             <ResultCard delay={240} className="p-5 sm:p-6">
               <span className="text-[10px] font-medium uppercase tracking-wider text-zinc-500">
-                Core Subtext
+                {labels.coreSubtext}
               </span>
               <p className="mt-3 text-sm font-light leading-relaxed text-zinc-300">
                 {result.summary}
               </p>
               <div className="mt-5 border-t border-white/5 pt-5">
                 <span className="text-[10px] font-medium uppercase tracking-wider text-violet-400/80">
-                  Strategy
+                  {labels.strategy}
                 </span>
                 <p className="mt-2 text-sm font-light leading-relaxed text-zinc-400">
                   {result.strategy}
@@ -191,17 +262,17 @@ export default function AnalyzePage() {
                 className="animate-slide-up mb-4 text-[10px] font-medium uppercase tracking-wider text-zinc-500"
                 style={{ animationDelay: "320ms" }}
               >
-                Response Matrix
+                {labels.responseMatrix}
               </h2>
               <div className="grid gap-4 sm:grid-cols-2">
-                {RESPONSE_STYLES.map(({ key, label, color, border }, i) => (
+                {RESPONSE_STYLES.map(({ key, color, border }, i) => (
                   <ResultCard
                     key={key}
                     delay={400 + i * 80}
                     className={`p-4 ${border}`}
                   >
                     <span className={`text-[10px] font-bold uppercase ${color}`}>
-                      {label}
+                      {labels.responses[key]}
                     </span>
                     <p className="mt-2 text-sm font-light leading-relaxed text-zinc-400">
                       &ldquo;{result.responses[key]}&rdquo;
@@ -216,14 +287,14 @@ export default function AnalyzePage() {
               style={{ animationDelay: "720ms" }}
             >
               <span className="text-zinc-600">
-                AI interpreted this conversation. Keep your agency.
+                {labels.footer}
               </span>
               <button
                 type="button"
                 onClick={handleShare}
                 className="rounded-xl border border-white/10 bg-white/5 px-4 py-2 font-medium text-zinc-300 transition-colors hover:bg-white/10 hover:text-white"
               >
-                {copied ? "Link copied!" : "Share analysis"}
+                {copied ? labels.copied : labels.share}
               </button>
             </div>
           </div>
