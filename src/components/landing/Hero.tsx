@@ -2,38 +2,35 @@ import { Button } from "@/components/ui/Button";
 
 export function Hero() {
   return (
-    <section className="relative flex min-h-[90vh] flex-col items-center justify-center px-4 pt-24 text-center sm:px-6">
+    <section className="relative px-4 pb-8 pt-28 text-center sm:px-6 sm:pb-12 sm:pt-32">
       <div
         aria-hidden
-        className="pointer-events-none absolute left-1/2 top-1/3 h-[500px] w-[500px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-violet-600/20 blur-[120px]"
+        className="pointer-events-none absolute left-1/2 top-0 h-[420px] w-[640px] -translate-x-1/2 rounded-full bg-violet-600/15 blur-[120px]"
       />
       <div
         aria-hidden
-        className="pointer-events-none absolute right-1/4 top-1/2 h-[300px] w-[300px] rounded-full bg-indigo-600/15 blur-[100px]"
+        className="pointer-events-none absolute right-0 top-1/4 h-[280px] w-[280px] rounded-full bg-indigo-600/10 blur-[100px]"
       />
 
-      <p className="mb-4 text-xs font-medium uppercase tracking-[0.2em] text-violet-400">
+      <p className="relative mb-5 text-xs font-medium uppercase tracking-[0.25em] text-violet-400">
         ReadThemAI
       </p>
 
-      <h1 className="font-display max-w-4xl text-4xl font-light leading-tight tracking-tight text-white sm:text-5xl md:text-6xl lg:text-7xl">
-        Understand conversations.
+      <h1 className="relative font-display mx-auto max-w-4xl text-4xl font-light leading-[1.1] tracking-tight text-white sm:text-5xl md:text-6xl lg:text-7xl">
+        Read Between
         <br />
-        <span className="bg-gradient-to-r from-violet-300 to-indigo-300 bg-clip-text text-transparent">
-          Respond better.
+        <span className="bg-gradient-to-r from-violet-300 via-purple-200 to-indigo-300 bg-clip-text text-transparent">
+          The Lines
         </span>
-        <br />
-        Stay in control.
       </h1>
 
-      <p className="mt-6 max-w-xl text-lg text-zinc-400 sm:text-xl">
-        AI Communication Coach for modern relationships.
+      <p className="relative mx-auto mt-6 max-w-2xl text-lg font-light leading-relaxed text-zinc-400 sm:text-xl">
+        Paste any message. Understand the real intent. Respond with confidence.
       </p>
 
-      <div className="mt-10 flex flex-col gap-4 sm:flex-row">
-        <Button href="/app">Start Free Analysis</Button>
-        <Button href="#how-it-works" variant="secondary">
-          See how it works
+      <div className="relative mt-10">
+        <Button href="/app" className="px-8 py-3.5 text-base">
+          Analyze Your Message — It&apos;s Free
         </Button>
       </div>
     </section>
