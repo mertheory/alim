@@ -9,7 +9,7 @@ export default function LandingPage() {
       <Hero />
       <HowItWorks />
       <footer className="border-t border-white/5 py-8 text-center text-xs text-zinc-600">
-        <p>Alim Archetype — Communication coaching, not psychological diagnosis.</p>
+        <p>ReadThemAI — Communication coaching, not psychological diagnosis.</p>
       </footer>
     </main>
   );

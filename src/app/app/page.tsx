@@ -65,7 +65,7 @@ export default function Dashboard() {
       <div className="mx-auto max-w-4xl space-y-8">
         <div className="flex items-center justify-between border-b border-gray-900 pb-4">
           <h1 className="text-xl font-black tracking-wider text-purple-400">
-            ALIM ARCHETYPE
+            ReadThemAI
           </h1>
           <span className="rounded-full border border-purple-800/30 bg-purple-950 px-3 py-1 font-mono text-xs text-purple-400">
             Free Sandbox Access

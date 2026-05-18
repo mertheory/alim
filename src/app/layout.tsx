@@ -17,10 +17,10 @@ const dmSans = DM_Sans({
 });
 
 export const metadata: Metadata = {
-  title: "Alim Archetype — AI Communication Coach",
+  title: "ReadThemAI — AI Communication Coach",
   description:
-    "Understand conversations. Respond better. Stay in control. AI communication coaching for modern relationships.",
-  applicationName: "Alim Archetype",
+    "ReadThemAI helps you understand conversations, respond better, and stay in control. AI communication coaching for modern relationships.",
+  applicationName: "ReadThemAI",
   icons: { icon: "/icon.svg" },
 };
 

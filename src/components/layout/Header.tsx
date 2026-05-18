@@ -7,7 +7,7 @@ export function Header() {
         <Link href="/" className="group flex items-center gap-2">
           <span className="h-2 w-2 rounded-full bg-violet-500 shadow-[0_0_12px_rgba(139,92,246,0.8)]" />
           <span className="font-display text-lg font-medium tracking-wide text-white">
-            Alim Archetype
+            ReadThemAI
           </span>
         </Link>
         <nav className="flex items-center gap-4">

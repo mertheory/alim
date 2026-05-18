@@ -13,7 +13,7 @@ export function Hero() {
       />
 
       <p className="mb-4 text-xs font-medium uppercase tracking-[0.2em] text-violet-400">
-        AI Communication Coach
+        ReadThemAI
       </p>
 
       <h1 className="font-display max-w-4xl text-4xl font-light leading-tight tracking-tight text-white sm:text-5xl md:text-6xl lg:text-7xl">
