@@ -142,14 +142,28 @@ export default function AnalyzePage() {
     }
   };
 
+  const labels = UI_LABELS[result?.language ?? "en"];
+  const riskStyle = result ? RISK_STYLES[result.riskLevel] : RISK_STYLES.moderate;
+
   const handleShare = async () => {
-    await navigator.clipboard.writeText(window.location.href);
+    if (!result) return;
+
+    const partnerPower = 100 - result.userPowerPercent;
+    const shareText = [
+      `${labels.riskTitle}: ${labels.riskBadges[result.riskLevel]} - ${result.riskLabel}`,
+      `${labels.powerTitle}: ${labels.powerLabels.partner} ${partnerPower}% / ${labels.powerLabels.you} ${result.userPowerPercent}%`,
+      "",
+      `${labels.responseMatrix}:`,
+      `${labels.responses.soft}: ${result.responses.soft}`,
+      `${labels.responses.balanced}: ${result.responses.balanced}`,
+      `${labels.responses.direct}: ${result.responses.direct}`,
+      `${labels.responses.savage}: ${result.responses.savage}`,
+    ].join("\n");
+
+    await navigator.clipboard.writeText(shareText);
     setCopied(true);
     setTimeout(() => setCopied(false), 2000);
   };
-
-  const labels = UI_LABELS[result?.language ?? "en"];
-  const riskStyle = result ? RISK_STYLES[result.riskLevel] : RISK_STYLES.moderate;
 
   return (
     <div className="relative min-h-screen overflow-x-hidden bg-black font-sans text-white">
@@ -294,7 +308,7 @@ export default function AnalyzePage() {
                 onClick={handleShare}
                 className="rounded-xl border border-white/10 bg-white/5 px-4 py-2 font-medium text-zinc-300 transition-colors hover:bg-white/10 hover:text-white"
               >
-                {copied ? labels.copied : labels.share}
+                {copied ? "Copied!" : labels.share}
               </button>
             </div>
           </div>
